@@ -1,0 +1,415 @@
+
+sudokoo:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00010094 <main>:
+void showBoard(int board[SIZE][SIZE]);
+int isSafe(int row, int col, int board[SIZE][SIZE], int num);
+int solveBoard(int board[SIZE][SIZE]);
+int isBoardFull(int board[SIZE][SIZE]);
+
+int main(int argc, char* argv[]) {
+   10094:	1101                	addi	sp,sp,-32
+   10096:	ce06                	sw	ra,28(sp)
+   10098:	cc22                	sw	s0,24(sp)
+   1009a:	1000                	addi	s0,sp,32
+   1009c:	fea42623          	sw	a0,-20(s0)
+   100a0:	feb42423          	sw	a1,-24(s0)
+
+    if (solveBoard(board)) {
+   100a4:	67c5                	lui	a5,0x11
+   100a6:	3c878513          	addi	a0,a5,968 # 113c8 <board>
+   100aa:	208d                	jal	1010c <solveBoard>
+   100ac:	87aa                	mv	a5,a0
+   100ae:	c789                	beqz	a5,100b8 <main+0x24>
+        //printf("SOLVED\n");
+        showBoard(board);
+   100b0:	67c5                	lui	a5,0x11
+   100b2:	3c878513          	addi	a0,a5,968 # 113c8 <board>
+   100b6:	2039                	jal	100c4 <showBoard>
+    } else {
+        //printf("Unsuccessful\n");
+    }
+
+    return 0;
+   100b8:	4781                	li	a5,0
+}
+   100ba:	853e                	mv	a0,a5
+   100bc:	40f2                	lw	ra,28(sp)
+   100be:	4462                	lw	s0,24(sp)
+   100c0:	6105                	addi	sp,sp,32
+   100c2:	8082                	ret
+
+000100c4 <showBoard>:
+
+void showBoard(int board[SIZE][SIZE]) {
+   100c4:	7179                	addi	sp,sp,-48
+   100c6:	d622                	sw	s0,44(sp)
+   100c8:	1800                	addi	s0,sp,48
+   100ca:	fca42e23          	sw	a0,-36(s0)
+    for (int i = 0; i < SIZE; i++) {
+   100ce:	fe042623          	sw	zero,-20(s0)
+   100d2:	a01d                	j	100f8 <showBoard+0x34>
+        for (int j = 0; j < SIZE; j++) {
+   100d4:	fe042423          	sw	zero,-24(s0)
+   100d8:	a031                	j	100e4 <showBoard+0x20>
+   100da:	fe842783          	lw	a5,-24(s0)
+   100de:	0785                	addi	a5,a5,1
+   100e0:	fef42423          	sw	a5,-24(s0)
+   100e4:	fe842703          	lw	a4,-24(s0)
+   100e8:	47a1                	li	a5,8
+   100ea:	fee7d8e3          	bge	a5,a4,100da <showBoard+0x16>
+    for (int i = 0; i < SIZE; i++) {
+   100ee:	fec42783          	lw	a5,-20(s0)
+   100f2:	0785                	addi	a5,a5,1
+   100f4:	fef42623          	sw	a5,-20(s0)
+   100f8:	fec42703          	lw	a4,-20(s0)
+   100fc:	47a1                	li	a5,8
+   100fe:	fce7dbe3          	bge	a5,a4,100d4 <showBoard+0x10>
+            //printf("%d ", board[i][j]);
+        }
+        //printf("\n");
+    }
+    //printf("\n");
+}
+   10102:	0001                	nop
+   10104:	0001                	nop
+   10106:	5432                	lw	s0,44(sp)
+   10108:	6145                	addi	sp,sp,48
+   1010a:	8082                	ret
+
+0001010c <solveBoard>:
+
+int solveBoard(int board[SIZE][SIZE]) {
+   1010c:	7179                	addi	sp,sp,-48
+   1010e:	d606                	sw	ra,44(sp)
+   10110:	d422                	sw	s0,40(sp)
+   10112:	1800                	addi	s0,sp,48
+   10114:	fca42e23          	sw	a0,-36(s0)
+    int row, col; //defining for loop parameters
+
+    for (row = 0; row < SIZE; row++) {
+   10118:	fe042623          	sw	zero,-20(s0)
+   1011c:	a0f1                	j	101e8 <solveBoard+0xdc>
+        for (col = 0; col < SIZE; col++) {
+   1011e:	fe042423          	sw	zero,-24(s0)
+   10122:	a84d                	j	101d4 <solveBoard+0xc8>
+            if (board[row][col] == 0) {
+   10124:	fec42703          	lw	a4,-20(s0)
+   10128:	87ba                	mv	a5,a4
+   1012a:	078e                	slli	a5,a5,0x3
+   1012c:	97ba                	add	a5,a5,a4
+   1012e:	078a                	slli	a5,a5,0x2
+   10130:	873e                	mv	a4,a5
+   10132:	fdc42783          	lw	a5,-36(s0)
+   10136:	973e                	add	a4,a4,a5
+   10138:	fe842783          	lw	a5,-24(s0)
+   1013c:	078a                	slli	a5,a5,0x2
+   1013e:	97ba                	add	a5,a5,a4
+   10140:	439c                	lw	a5,0(a5)
+   10142:	e7c1                	bnez	a5,101ca <solveBoard+0xbe>
+                for (int num = 1; num <= SIZE; num++) {
+   10144:	4785                	li	a5,1
+   10146:	fef42223          	sw	a5,-28(s0)
+   1014a:	a88d                	j	101bc <solveBoard+0xb0>
+                    if (isSafe(row, col, board, num)) {
+   1014c:	fe442683          	lw	a3,-28(s0)
+   10150:	fdc42603          	lw	a2,-36(s0)
+   10154:	fe842583          	lw	a1,-24(s0)
+   10158:	fec42503          	lw	a0,-20(s0)
+   1015c:	2239                	jal	1026a <isSafe>
+   1015e:	87aa                	mv	a5,a0
+   10160:	cba9                	beqz	a5,101b2 <solveBoard+0xa6>
+                        board[row][col] = num;
+   10162:	fec42703          	lw	a4,-20(s0)
+   10166:	87ba                	mv	a5,a4
+   10168:	078e                	slli	a5,a5,0x3
+   1016a:	97ba                	add	a5,a5,a4
+   1016c:	078a                	slli	a5,a5,0x2
+   1016e:	873e                	mv	a4,a5
+   10170:	fdc42783          	lw	a5,-36(s0)
+   10174:	973e                	add	a4,a4,a5
+   10176:	fe842783          	lw	a5,-24(s0)
+   1017a:	078a                	slli	a5,a5,0x2
+   1017c:	97ba                	add	a5,a5,a4
+   1017e:	fe442703          	lw	a4,-28(s0)
+   10182:	c398                	sw	a4,0(a5)
+
+                        if (solveBoard(board)) {
+   10184:	fdc42503          	lw	a0,-36(s0)
+   10188:	3751                	jal	1010c <solveBoard>
+   1018a:	87aa                	mv	a5,a0
+   1018c:	c399                	beqz	a5,10192 <solveBoard+0x86>
+                            return 1;
+   1018e:	4785                	li	a5,1
+   10190:	a095                	j	101f4 <solveBoard+0xe8>
+                        } else {
+                            board[row][col] = 0;
+   10192:	fec42703          	lw	a4,-20(s0)
+   10196:	87ba                	mv	a5,a4
+   10198:	078e                	slli	a5,a5,0x3
+   1019a:	97ba                	add	a5,a5,a4
+   1019c:	078a                	slli	a5,a5,0x2
+   1019e:	873e                	mv	a4,a5
+   101a0:	fdc42783          	lw	a5,-36(s0)
+   101a4:	973e                	add	a4,a4,a5
+   101a6:	fe842783          	lw	a5,-24(s0)
+   101aa:	078a                	slli	a5,a5,0x2
+   101ac:	97ba                	add	a5,a5,a4
+   101ae:	0007a023          	sw	zero,0(a5)
+                for (int num = 1; num <= SIZE; num++) {
+   101b2:	fe442783          	lw	a5,-28(s0)
+   101b6:	0785                	addi	a5,a5,1
+   101b8:	fef42223          	sw	a5,-28(s0)
+   101bc:	fe442703          	lw	a4,-28(s0)
+   101c0:	47a5                	li	a5,9
+   101c2:	f8e7d5e3          	bge	a5,a4,1014c <solveBoard+0x40>
+                        }
+                    }
+                }
+                return 0;
+   101c6:	4781                	li	a5,0
+   101c8:	a035                	j	101f4 <solveBoard+0xe8>
+        for (col = 0; col < SIZE; col++) {
+   101ca:	fe842783          	lw	a5,-24(s0)
+   101ce:	0785                	addi	a5,a5,1
+   101d0:	fef42423          	sw	a5,-24(s0)
+   101d4:	fe842703          	lw	a4,-24(s0)
+   101d8:	47a1                	li	a5,8
+   101da:	f4e7d5e3          	bge	a5,a4,10124 <solveBoard+0x18>
+    for (row = 0; row < SIZE; row++) {
+   101de:	fec42783          	lw	a5,-20(s0)
+   101e2:	0785                	addi	a5,a5,1
+   101e4:	fef42623          	sw	a5,-20(s0)
+   101e8:	fec42703          	lw	a4,-20(s0)
+   101ec:	47a1                	li	a5,8
+   101ee:	f2e7d8e3          	bge	a5,a4,1011e <solveBoard+0x12>
+            }
+        }
+    }
+    return 1;
+   101f2:	4785                	li	a5,1
+}
+   101f4:	853e                	mv	a0,a5
+   101f6:	50b2                	lw	ra,44(sp)
+   101f8:	5422                	lw	s0,40(sp)
+   101fa:	6145                	addi	sp,sp,48
+   101fc:	8082                	ret
+
+000101fe <isBoardFull>:
+
+int isBoardFull(int board[SIZE][SIZE]) {
+   101fe:	7179                	addi	sp,sp,-48
+   10200:	d622                	sw	s0,44(sp)
+   10202:	1800                	addi	s0,sp,48
+   10204:	fca42e23          	sw	a0,-36(s0)
+    for (int i = 0; i < SIZE; i++) {
+   10208:	fe042623          	sw	zero,-20(s0)
+   1020c:	a0a9                	j	10256 <isBoardFull+0x58>
+        for (int j = 0; j < SIZE; j++) {
+   1020e:	fe042423          	sw	zero,-24(s0)
+   10212:	a805                	j	10242 <isBoardFull+0x44>
+            if (board[i][j] == 0) {
+   10214:	fec42703          	lw	a4,-20(s0)
+   10218:	87ba                	mv	a5,a4
+   1021a:	078e                	slli	a5,a5,0x3
+   1021c:	97ba                	add	a5,a5,a4
+   1021e:	078a                	slli	a5,a5,0x2
+   10220:	873e                	mv	a4,a5
+   10222:	fdc42783          	lw	a5,-36(s0)
+   10226:	973e                	add	a4,a4,a5
+   10228:	fe842783          	lw	a5,-24(s0)
+   1022c:	078a                	slli	a5,a5,0x2
+   1022e:	97ba                	add	a5,a5,a4
+   10230:	439c                	lw	a5,0(a5)
+   10232:	e399                	bnez	a5,10238 <isBoardFull+0x3a>
+                return 1;
+   10234:	4785                	li	a5,1
+   10236:	a035                	j	10262 <isBoardFull+0x64>
+        for (int j = 0; j < SIZE; j++) {
+   10238:	fe842783          	lw	a5,-24(s0)
+   1023c:	0785                	addi	a5,a5,1
+   1023e:	fef42423          	sw	a5,-24(s0)
+   10242:	fe842703          	lw	a4,-24(s0)
+   10246:	47a1                	li	a5,8
+   10248:	fce7d6e3          	bge	a5,a4,10214 <isBoardFull+0x16>
+    for (int i = 0; i < SIZE; i++) {
+   1024c:	fec42783          	lw	a5,-20(s0)
+   10250:	0785                	addi	a5,a5,1
+   10252:	fef42623          	sw	a5,-20(s0)
+   10256:	fec42703          	lw	a4,-20(s0)
+   1025a:	47a1                	li	a5,8
+   1025c:	fae7d9e3          	bge	a5,a4,1020e <isBoardFull+0x10>
+            }
+        }
+    }
+    return 0;
+   10260:	4781                	li	a5,0
+}
+   10262:	853e                	mv	a0,a5
+   10264:	5432                	lw	s0,44(sp)
+   10266:	6145                	addi	sp,sp,48
+   10268:	8082                	ret
+
+0001026a <isSafe>:
+
+int isSafe(int row, int col, int board[SIZE][SIZE], int num) {
+   1026a:	7139                	addi	sp,sp,-64
+   1026c:	de22                	sw	s0,60(sp)
+   1026e:	0080                	addi	s0,sp,64
+   10270:	fca42623          	sw	a0,-52(s0)
+   10274:	fcb42423          	sw	a1,-56(s0)
+   10278:	fcc42223          	sw	a2,-60(s0)
+   1027c:	fcd42023          	sw	a3,-64(s0)
+    for (int i = 0; i < SIZE; i++) {
+   10280:	fe042623          	sw	zero,-20(s0)
+   10284:	a81d                	j	102ba <isSafe+0x50>
+        if (board[i][col] == num) {
+   10286:	fec42703          	lw	a4,-20(s0)
+   1028a:	87ba                	mv	a5,a4
+   1028c:	078e                	slli	a5,a5,0x3
+   1028e:	97ba                	add	a5,a5,a4
+   10290:	078a                	slli	a5,a5,0x2
+   10292:	873e                	mv	a4,a5
+   10294:	fc442783          	lw	a5,-60(s0)
+   10298:	973e                	add	a4,a4,a5
+   1029a:	fc842783          	lw	a5,-56(s0)
+   1029e:	078a                	slli	a5,a5,0x2
+   102a0:	97ba                	add	a5,a5,a4
+   102a2:	439c                	lw	a5,0(a5)
+   102a4:	fc042703          	lw	a4,-64(s0)
+   102a8:	00f71463          	bne	a4,a5,102b0 <isSafe+0x46>
+            return 0;
+   102ac:	4781                	li	a5,0
+   102ae:	a8d5                	j	103a2 <isSafe+0x138>
+    for (int i = 0; i < SIZE; i++) {
+   102b0:	fec42783          	lw	a5,-20(s0)
+   102b4:	0785                	addi	a5,a5,1
+   102b6:	fef42623          	sw	a5,-20(s0)
+   102ba:	fec42703          	lw	a4,-20(s0)
+   102be:	47a1                	li	a5,8
+   102c0:	fce7d3e3          	bge	a5,a4,10286 <isSafe+0x1c>
+        }
+    }
+
+    for (int j = 0; j < SIZE; j++) {
+   102c4:	fe042423          	sw	zero,-24(s0)
+   102c8:	a81d                	j	102fe <isSafe+0x94>
+        if (board[row][j] == num) {
+   102ca:	fcc42703          	lw	a4,-52(s0)
+   102ce:	87ba                	mv	a5,a4
+   102d0:	078e                	slli	a5,a5,0x3
+   102d2:	97ba                	add	a5,a5,a4
+   102d4:	078a                	slli	a5,a5,0x2
+   102d6:	873e                	mv	a4,a5
+   102d8:	fc442783          	lw	a5,-60(s0)
+   102dc:	973e                	add	a4,a4,a5
+   102de:	fe842783          	lw	a5,-24(s0)
+   102e2:	078a                	slli	a5,a5,0x2
+   102e4:	97ba                	add	a5,a5,a4
+   102e6:	439c                	lw	a5,0(a5)
+   102e8:	fc042703          	lw	a4,-64(s0)
+   102ec:	00f71463          	bne	a4,a5,102f4 <isSafe+0x8a>
+            return 0;
+   102f0:	4781                	li	a5,0
+   102f2:	a845                	j	103a2 <isSafe+0x138>
+    for (int j = 0; j < SIZE; j++) {
+   102f4:	fe842783          	lw	a5,-24(s0)
+   102f8:	0785                	addi	a5,a5,1
+   102fa:	fef42423          	sw	a5,-24(s0)
+   102fe:	fe842703          	lw	a4,-24(s0)
+   10302:	47a1                	li	a5,8
+   10304:	fce7d3e3          	bge	a5,a4,102ca <isSafe+0x60>
+        }
+    }
+
+    int startRow = row - row % 3, startCol = col - col % 3;
+   10308:	fcc42703          	lw	a4,-52(s0)
+   1030c:	478d                	li	a5,3
+   1030e:	02f767b3          	rem	a5,a4,a5
+   10312:	fcc42703          	lw	a4,-52(s0)
+   10316:	40f707b3          	sub	a5,a4,a5
+   1031a:	fcf42e23          	sw	a5,-36(s0)
+   1031e:	fc842703          	lw	a4,-56(s0)
+   10322:	478d                	li	a5,3
+   10324:	02f767b3          	rem	a5,a4,a5
+   10328:	fc842703          	lw	a4,-56(s0)
+   1032c:	40f707b3          	sub	a5,a4,a5
+   10330:	fcf42c23          	sw	a5,-40(s0)
+    for (int i = 0; i < 3; i++) {
+   10334:	fe042223          	sw	zero,-28(s0)
+   10338:	a8b9                	j	10396 <isSafe+0x12c>
+        for (int j = 0; j < 3; j++) {
+   1033a:	fe042023          	sw	zero,-32(s0)
+   1033e:	a091                	j	10382 <isSafe+0x118>
+            if (board[i + startRow][j + startCol] == num) {
+   10340:	fe442703          	lw	a4,-28(s0)
+   10344:	fdc42783          	lw	a5,-36(s0)
+   10348:	97ba                	add	a5,a5,a4
+   1034a:	873e                	mv	a4,a5
+   1034c:	87ba                	mv	a5,a4
+   1034e:	078e                	slli	a5,a5,0x3
+   10350:	97ba                	add	a5,a5,a4
+   10352:	078a                	slli	a5,a5,0x2
+   10354:	873e                	mv	a4,a5
+   10356:	fc442783          	lw	a5,-60(s0)
+   1035a:	973e                	add	a4,a4,a5
+   1035c:	fe042683          	lw	a3,-32(s0)
+   10360:	fd842783          	lw	a5,-40(s0)
+   10364:	97b6                	add	a5,a5,a3
+   10366:	078a                	slli	a5,a5,0x2
+   10368:	97ba                	add	a5,a5,a4
+   1036a:	439c                	lw	a5,0(a5)
+   1036c:	fc042703          	lw	a4,-64(s0)
+   10370:	00f71463          	bne	a4,a5,10378 <isSafe+0x10e>
+                return 0;
+   10374:	4781                	li	a5,0
+   10376:	a035                	j	103a2 <isSafe+0x138>
+        for (int j = 0; j < 3; j++) {
+   10378:	fe042783          	lw	a5,-32(s0)
+   1037c:	0785                	addi	a5,a5,1
+   1037e:	fef42023          	sw	a5,-32(s0)
+   10382:	fe042703          	lw	a4,-32(s0)
+   10386:	4789                	li	a5,2
+   10388:	fae7dce3          	bge	a5,a4,10340 <isSafe+0xd6>
+    for (int i = 0; i < 3; i++) {
+   1038c:	fe442783          	lw	a5,-28(s0)
+   10390:	0785                	addi	a5,a5,1
+   10392:	fef42223          	sw	a5,-28(s0)
+   10396:	fe442703          	lw	a4,-28(s0)
+   1039a:	4789                	li	a5,2
+   1039c:	f8e7dfe3          	bge	a5,a4,1033a <isSafe+0xd0>
+            }
+        }
+    }
+    return 1;
+   103a0:	4785                	li	a5,1
+}
+   103a2:	853e                	mv	a0,a5
+   103a4:	5472                	lw	s0,60(sp)
+   103a6:	6121                	addi	sp,sp,64
+   103a8:	8082                	ret
+
+000103aa <_start>:
+
+void _start()
+{
+   103aa:	1141                	addi	sp,sp,-16
+   103ac:	c606                	sw	ra,12(sp)
+   103ae:	c422                	sw	s0,8(sp)
+   103b0:	0800                	addi	s0,sp,16
+    main(0, 0);
+   103b2:	4581                	li	a1,0
+   103b4:	4501                	li	a0,0
+   103b6:	39f9                	jal	10094 <main>
+    tohost = 1;
+   103b8:	4705                	li	a4,1
+   103ba:	94e1a223          	sw	a4,-1724(gp) # 1150c <tohost>
+}
+   103be:	0001                	nop
+   103c0:	40b2                	lw	ra,12(sp)
+   103c2:	4422                	lw	s0,8(sp)
+   103c4:	0141                	addi	sp,sp,16
+   103c6:	8082                	ret
