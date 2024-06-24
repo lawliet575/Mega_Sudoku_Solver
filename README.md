@@ -23,9 +23,5 @@ Welcome to the 64x64 Sudoku Solver project! This solver is implemented entirely 
 2. Please review the section on SIMULATION in the final report for instructions on executing the Python script and running the code.
 
 ## Screenshots / Images 🖼️
+![image](https://github.com/lawliet575/Mega_Sudoku_Solver/assets/113696774/a0cf9565-d602-4554-866c-2ae818181142)
 
-Include some screenshots or images here to showcase your solver in action. This could include snapshots of the solver solving different sizes of Sudoku grids or any other relevant visuals.
-
----
-
-Feel free to customize further with additional sections or details about your project!
