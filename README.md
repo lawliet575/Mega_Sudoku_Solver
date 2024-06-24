@@ -22,7 +22,9 @@ Welcome to the 64x64 Sudoku Solver project! This solver is implemented entirely 
 
 2. Please review the section on SIMULATION in the final report for instructions on executing the Python script and running the code.
 
-## Screenshots / Images 🖼️
-## SOLVED BOARD AFTER EXECUTING THE INSTRUCTIONS
+## After following the instructions, the code is executed as shown.
+![image](https://github.com/lawliet575/Mega_Sudoku_Solver/assets/113696774/fc347dcd-04f4-484c-b49a-9d7924b19d85)
+   
+## Solved Sudoku board in Excel after following instructions.
 ![image](https://github.com/lawliet575/Mega_Sudoku_Solver/assets/113696774/a0cf9565-d602-4554-866c-2ae818181142)
 
