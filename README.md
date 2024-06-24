@@ -13,8 +13,11 @@ Welcome to the 64x64 Sudoku Solver project! This solver is implemented entirely 
 
 ### Prerequisites
 
-- Ubuntu Linux
-- RISC-V assembly toolchain
+- Ubuntu Linux OS is required to run this program
+- VEER-ISS Simulator
+- RISC-V GNU assembly toolchain
+## TOOL INSTALLATON GUIDE CAN BE FOUND BELOW HERE.
+https://docs.google.com/document/d/1VKnpjQXed6rvIePs1hTzo-GrIkoLV156fln4ubaZyM8/edit
 
 ### Installation
 
