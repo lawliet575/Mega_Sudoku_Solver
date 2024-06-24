@@ -19,3 +19,4 @@ Welcome to the 64x64 Sudoku Solver project! This solver is implemented entirely 
 ### Installation
 
 1. Clone the repository:
+2. Please review the section on SIMULATION in the final report for instructions on executing the Python script and running the code.
